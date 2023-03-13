@@ -11,27 +11,27 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.tismart.reto02.entity.Reporte;
-import com.tismart.reto02.service.ReporteEscuelaService;
-import com.tismart.reto02.util.TipoReportEnum;
+import com.tismart.reto02.commons.JasperReportManager;
+import com.tismart.reto02.entity.ReportDTO;
+import com.tismart.reto02.enums.TypeReportEnum;
+import com.tismart.reto02.service.IReportService;
 
 import net.sf.jasperreports.engine.JRException;
 
 @Service
-public class ReporteEscuelaServiceJpa implements ReporteEscuelaService{
+public class ReportServiceImpl implements IReportService{
 	
-	@Autowired(required=false)
+	@Autowired
 	private JasperReportManager reportManager;
 	
 	@Autowired
 	private DataSource dataSource;
 
 	@Override
-	public Reporte obtenerReporteEscuela(Map<String, Object> params) throws JRException, IOException, SQLException {
-		String fileName = "R_Listado_Escuela";
-		Reporte dto = new Reporte();
-		String extension = params.get("tipo").toString().equalsIgnoreCase(TipoReportEnum.EXCEL.name()) ? ".xlsx"
-				: ".pdf";
+	public ReportDTO getReport(Map<String, Object> params, String reportName) throws JRException, IOException, SQLException {
+		String fileName = reportName;
+		ReportDTO dto = new ReportDTO();
+		String extension = params.get("tipo").toString().equalsIgnoreCase(TypeReportEnum.EXCEL.name()) ? ".xlsx" : ".pdf";
 		dto.setFileName(fileName + extension);
 
 		ByteArrayOutputStream stream = reportManager.export(fileName, params.get("tipo").toString(), params,
@@ -44,5 +44,4 @@ public class ReporteEscuelaServiceJpa implements ReporteEscuelaService{
 		return dto;
 	}
 
-	
 }

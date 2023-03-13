@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name="FACULTAD")
 public class Facultad {
@@ -17,10 +19,14 @@ public class Facultad {
 	@Column(name="IDFACULTAD")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	@Column(name="DESCFACULTAD")
 	private String descripcion;
+	
 	@Column(name="FECHAREGISTRO")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date fecha;
+	
 	public Integer getId() {
 		return id;
 	}

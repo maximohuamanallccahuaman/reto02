@@ -2,7 +2,7 @@ package com.tismart.reto02.entity;
 
 import java.io.ByteArrayInputStream;
 
-public class Reporte {
+public class ReportDTO {
 	
 	private String fileName;
 	private ByteArrayInputStream stream;

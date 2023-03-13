@@ -4,36 +4,48 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
- @Entity
- @Table(name="ESCUELA")
+import org.springframework.format.annotation.DateTimeFormat;
+
+@Entity
+@Table(name="ESCUELA")
 public class Escuela {
 	
 	@Id
 	@Column(name="IDESCUELA")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@OneToOne
+	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="IDFACULTAD")
 	private Facultad facultad;
+	
 	@Column(name="NOMBRE")
 	private String nombre;
+	
 	@Column(name="CANTALUMNOS")
 	private Integer cantidadAlumnos;
+	
 	@Column(name="RECURSOFISCAL")
 	private Double recursoFiscal;
+	
 	@Column(name="LICENCIADA")
 	private String licenciada;
+	
 	@Column(name="CLASIFICACION")
 	private Integer clasificacion;
+	
 	@Column(name="FECHAREGISTRO")
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date fecha;
+	
 	public Integer getId() {
 		return id;
 	}

@@ -76,6 +76,11 @@ public class EscuelaController {
 		return serEscuela.exportReport(format);
 	}
 	
+	@GetMapping("/report1")
+	public String getReport1() {
+		return "reportes/report1";
+	}
+	
 	@InitBinder
 	public void initBinder(WebDataBinder webDataBinder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");

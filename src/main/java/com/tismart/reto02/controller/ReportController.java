@@ -14,27 +14,28 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tismart.reto02.entity.Reporte;
-import com.tismart.reto02.service.ReporteEscuelaService;
-import com.tismart.reto02.util.TipoReportEnum;
+import com.tismart.reto02.entity.ReportDTO;
+import com.tismart.reto02.enums.TypeReportEnum;
+import com.tismart.reto02.service.IReportService;
 
 import net.sf.jasperreports.engine.JRException;
 
+
 @Controller
 @RequestMapping("/report")
-public class ReporteEscuela {
-
-	@Autowired
-	private ReporteEscuelaService reporteEscuelaService;
+public class ReportController {
 	
-	@GetMapping(path = "/download")
-	public ResponseEntity<Resource> download(@RequestParam Map<String, Object> params)
+	@Autowired
+	private IReportService reportService;
+	
+	@GetMapping("/download/report1")
+	public ResponseEntity<Resource> downloadReport1(@RequestParam Map<String, Object> params)
 			throws JRException, IOException, SQLException {
-		Reporte dto = reporteEscuelaService.obtenerReporteEscuela(params);
+		ReportDTO dto = reportService.getReport(params, "reporte1");
 
 		InputStreamResource streamResource = new InputStreamResource(dto.getStream());
 		MediaType mediaType = null;
-		if (params.get("tipo").toString().equalsIgnoreCase(TipoReportEnum.EXCEL.name())) {
+		if (params.get("tipo").toString().equalsIgnoreCase(TypeReportEnum.EXCEL.name())) {
 			mediaType = MediaType.APPLICATION_OCTET_STREAM;
 		} else {
 			mediaType = MediaType.APPLICATION_PDF;
@@ -43,4 +44,5 @@ public class ReporteEscuela {
 		return ResponseEntity.ok().header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
 				.contentLength(dto.getLength()).contentType(mediaType).body(streamResource);
 	}
+
 }
